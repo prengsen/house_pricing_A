@@ -1,0 +1,1 @@
+[{"n_train": 1168, "n_val": 292, "n_test": 1459, "n_folds": 10, "rango_train": 710100, "max_train": 745000, "limite_rango": 1117500, "mejor_nrmse": 0.03804, "umbral_nrmse": 0.07609, "umbral_ks": 0.2, "umbral_cv": 0.5, "train_mediana": 165000, "inferencia_mediana": 157325, "generado": "2026-11-03 20:28"}]

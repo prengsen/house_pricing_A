@@ -1,0 +1,625 @@
+<meta name="dash-one-writer">
+<style>
+  /* Identidad Lambda Analytics: azul profundo, azul marino, ámbar como único acento y blanco; Calibri */
+  .hp {
+    --lx-deep: #0D2538; --lx-navy: #163B59; --lx-amber: #FFB530; --lx-white: #FFFFFF;
+    --lx-bg: var(--lx-white); --lx-panel: var(--lx-white); --lx-fg: var(--lx-deep); --lx-sub: var(--lx-navy);
+    --lx-muted: #5C768B; --lx-line: #C5CED6; --lx-grid: #E2E7EB; --lx-axis: #8B9DAC; --lx-ref: var(--lx-deep);
+    --lx-main: var(--lx-amber); --lx-second: var(--lx-navy); --lx-tint: #8B9DAC;
+    --lx-th-bg: var(--lx-deep); --lx-th-fg: var(--lx-white);
+    --lx-font: Calibri, Carlito, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) .hp {
+      --lx-bg: var(--lx-deep); --lx-panel: var(--lx-navy); --lx-fg: var(--lx-white); --lx-sub: #C5CED6;
+      --lx-muted: #A2B1BD; --lx-line: #2D4F6A; --lx-grid: #24476A; --lx-axis: #5C768B; --lx-ref: var(--lx-white);
+      --lx-second: var(--lx-white); --lx-tint: #8B9DAC; --lx-th-bg: var(--lx-deep); --lx-th-fg: var(--lx-white);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] .hp {
+    --lx-bg: var(--lx-deep); --lx-panel: var(--lx-navy); --lx-fg: var(--lx-white); --lx-sub: #C5CED6;
+    --lx-muted: #A2B1BD; --lx-line: #2D4F6A; --lx-grid: #24476A; --lx-axis: #5C768B; --lx-ref: var(--lx-white);
+    --lx-second: var(--lx-white); --lx-tint: #8B9DAC; --lx-th-bg: var(--lx-deep); --lx-th-fg: var(--lx-white);
+    color-scheme: dark;
+  }
+  .hp { display: grid; gap: var(--cds-gap-xl); font-family: var(--lx-font); background: var(--lx-bg); color: var(--lx-fg); padding: var(--cds-pad-lg); }
+  .hp-logo { display: block; width: 200px; height: auto; aspect-ratio: 2402 / 413; max-width: 100%; }
+  .hp-logo.is-dark { display: none; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .hp-logo.is-light { display: none; } :root:not([data-theme="light"]) .hp-logo.is-dark { display: block; } }
+  :root[data-theme="dark"] .hp-logo.is-light { display: none; }
+  :root[data-theme="dark"] .hp-logo.is-dark { display: block; }
+  .hp-head { display: grid; gap: var(--cds-gap-sm); }
+  .hp-brand { padding-block: var(--cds-pad-sm) var(--cds-pad-md); }
+  .hp-head h1 { font-family: var(--lx-font); font-weight: 700; font-size: var(--cds-font-size-title); color: var(--lx-fg); margin: 0; text-wrap: balance; }
+  .hp-rule { width: 56px; height: 3px; background: var(--lx-amber); border: 0; margin: 0; }
+  .hp-head p { margin: 0; max-width: 75ch; color: var(--lx-fg); }
+  .hp .hp-head b, .hp .hp-defs b { font-weight: 700; }
+  .hp .hp-head b[data-draw] { border-bottom: 2px solid var(--lx-amber); }
+  .hp-section { display: grid; gap: var(--cds-gap-md); }
+  .hp-section > h2 { font-family: var(--lx-font); font-size: var(--cds-font-size-heading); font-weight: 700; color: var(--lx-fg); margin: 0; text-wrap: balance; }
+  .hp-intro { margin: 0; color: var(--lx-sub); max-width: 75ch; }
+  .hp-grid { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+  .hp-card { background: var(--lx-panel); border: 1px solid var(--lx-line); border-radius: 2px; padding: var(--cds-pad-lg); display: grid; gap: var(--cds-gap-sm); min-width: 0; align-content: start; }
+  .hp-card h3 { margin: 0; font-size: var(--cds-font-size-heading); font-weight: 700; color: var(--lx-fg); }
+  .hp-note { margin: 0; color: var(--lx-muted); font-size: var(--cds-font-size-caption); }
+  .hp-chart { position: relative; min-height: 260px; }
+  .hp-table-wrap { overflow-x: auto; }
+  .hp-table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; font-size: var(--cds-font-size-body); }
+  .hp-table th, .hp-table td { text-align: left; padding: var(--cds-pad-xs) var(--cds-pad-sm); border-bottom: 1px solid var(--lx-line); white-space: nowrap; }
+  .hp-table th { background: var(--lx-th-bg); color: var(--lx-th-fg); font-weight: 700; font-size: var(--cds-font-size-caption); }
+  .hp-table .num { text-align: right; }
+  .hp-table tr.is-off td { color: var(--lx-muted); }
+  .hp-table tr.is-sel td { font-weight: 700; box-shadow: inset 0 -2px 0 var(--lx-amber); }
+  .hp .hp-table td.is-fail { background: var(--lx-amber); color: var(--lx-deep); font-weight: 700; }
+  .hp-table td.is-ok { color: var(--lx-fg); }
+  .hp .hp-table td.is-bad { color: var(--lx-fg); font-weight: 700; }
+  .hp-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--lx-muted); margin: 0; padding: 0; list-style: none; }
+  .hp-legend li { display: flex; align-items: center; gap: var(--cds-gap-xs); }
+  .hp-sw { width: 16px; height: 3px; display: inline-block; background: var(--lx-tint); }
+  .hp-sw.hp-c0 { background: var(--lx-main); }
+  .hp-sw.hp-c1 { background: var(--lx-second); }
+  .hp-sw.is-dashed { height: 0; background: none; border-top: 2px dashed var(--lx-second); }
+  .hp-sw.is-area { height: 10px; opacity: .45; }
+  .hp-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--cds-gap-sm); }
+  .hp-controls label { color: var(--lx-sub); font-size: var(--cds-font-size-caption); font-weight: 700; }
+  .hp-controls select { font: inherit; padding: var(--cds-pad-xs) var(--cds-pad-sm); border-radius: 0; border: 1px solid var(--lx-navy); background: var(--lx-panel); color: var(--lx-fg); }
+  .hp-controls select:focus-visible { outline: 2px solid var(--lx-amber); outline-offset: 2px; }
+  .hp-tip { position: absolute; pointer-events: none; background: var(--lx-panel); color: var(--lx-fg); border: 1px solid var(--lx-line); border-radius: 2px; box-shadow: var(--cds-shadow-popover); padding: var(--cds-pad-xs) var(--cds-pad-sm); font-size: var(--cds-font-size-caption); white-space: nowrap; z-index: 2; display: grid; gap: 2px; }
+  .hp-tip .k { color: var(--lx-muted); }
+  .hp-tip .row { display: flex; align-items: center; gap: var(--cds-gap-xs); }
+  .hp-tip .sw { width: 8px; height: 8px; display: inline-block; }
+  .hp-mult { display: grid; gap: var(--cds-gap-md); grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); min-height: 240px; }
+  .hp-mult-item { display: grid; gap: var(--cds-gap-xs); border: 1px solid var(--lx-line); border-radius: 2px; padding: var(--cds-pad-sm); min-width: 0; position: relative; }
+  .hp-mult-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: var(--cds-gap-xs); }
+  .hp-mult-head strong { font-weight: 700; }
+  .hp-pill { font-size: var(--cds-font-size-caption); padding: 0 var(--cds-pad-sm); border: 1px solid var(--lx-second); color: var(--lx-fg); }
+  .hp-pill.is-bad { background: var(--lx-amber); border-color: var(--lx-amber); color: var(--lx-deep); font-weight: 700; }
+  .hp-mult-item.is-off svg { opacity: .55; }
+  .hp-defs { margin: 0; padding-left: 1.2em; display: grid; gap: var(--cds-gap-xs); max-width: 80ch; }
+  .hp-sel-meta { margin: 0; font-size: var(--cds-font-size-caption); color: var(--lx-muted); }
+  .hp-foot { display: grid; gap: var(--cds-gap-sm); justify-items: center; padding-top: var(--cds-pad-lg); border-top: 2px solid var(--lx-amber); }
+  .hp-foot p { margin: 0; color: var(--lx-sub); font-size: var(--cds-font-size-caption); }
+  [data-dash-source-state=empty] { color: transparent; }
+  [data-dash-source-state=refreshing] { opacity: .5; transition: opacity var(--cds-dur-slow); }
+</style>
+
+<div class="hp">
+  <header class="hp-head" id="resumen">
+    <div class="hp-brand">
+      <img class="hp-logo is-light" src="/_blob/c58f2eba32da85881de060e876c46abf" alt="Lambda Analytics" width="200" height="34">
+      <img class="hp-logo is-dark" src="/_blob/b5c438fffa34537679c03a428e042af8" alt="Lambda Analytics" width="200" height="34">
+    </div>
+    <h1>Torneo de modelos House Pricing</h1>
+    <hr class="hp-rule">
+    <p><b data-draw="ganador" data-source="resumen" data-field="ganador" data-row="0">—</b> es el mejor modelo válido: RMSE en validación de <b data-draw="ganador-rmse" data-source="resumen" data-field="rmse_val" data-row="0">—</b> USD y NRMSE de <b data-draw="ganador-nrmse" data-source="resumen" data-field="nrmse_val" data-row="0">—</b>. Modelos descartados por incoherencia: <b data-draw="descartados" data-source="resumen" data-field="descartados" data-row="0">—</b>.</p>
+    <p class="hp-note">Validación cruzada de <span data-draw="n-folds" data-source="referencia" data-field="n_folds" data-row="0">—</span> folds sobre <span data-draw="n-train" data-source="referencia" data-field="n_train" data-row="0">—</span> casas de entrenamiento, validación con <span data-draw="n-val" data-source="referencia" data-field="n_val" data-row="0">—</span> casas y test con <span data-draw="n-test" data-source="referencia" data-field="n_test" data-row="0">—</span> casas. Todos los errores están en dólares (escala real de SalePrice); el NRMSE divide el RMSE entre el rango de SalePrice en entrenamiento.</p>
+  </header>
+
+  <section class="hp-section" id="torneo">
+    <h2>Resultados del torneo</h2>
+    <p class="hp-intro">Mejor configuración de cada modelo tras GridSearchCV, ordenada por RMSE en validación. La brecha compara el RMSE de entrenamiento con el de validación cruzada: una brecha alta indica sobreajuste.</p>
+    <div class="hp-card">
+      <div class="hp-table-wrap">
+        <table class="hp-table" data-source="modelos" data-row-key="modelo">
+          <thead>
+            <tr>
+              <th data-field="modelo">Modelo</th>
+              <th data-field="estado">Estado</th>
+              <th class="num" data-field="rmse_val">RMSE val (USD)</th>
+              <th class="num" data-field="nrmse_val">NRMSE val</th>
+              <th class="num" data-field="rmse_cv">RMSE CV (USD)</th>
+              <th class="num" data-field="std_cv">Desv. CV (USD)</th>
+              <th class="num" data-field="rmse_train_cv">RMSE train CV (USD)</th>
+              <th class="num" data-field="brecha_pct">Brecha (%)</th>
+              <th data-field="mejores_hiperparametros">Mejores hiperparámetros</th>
+            </tr>
+          </thead>
+          <tbody data-draw="tabla-modelos"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="hp-section" id="metricas">
+    <h2>Comparación de métricas entre modelos válidos</h2>
+    <div class="hp-grid">
+      <div class="hp-card" id="card-rmse">
+        <h3>RMSE en validación y en validación cruzada</h3>
+        <p class="hp-note">Barras más cortas indican menor error. Valores cercanos entre ambas métricas indican que el desempeño en CV se sostiene en datos no vistos.</p>
+        <ul class="hp-legend">
+          <li><span class="hp-sw hp-c0"></span>RMSE validación</li>
+          <li><span class="hp-sw hp-c1"></span>RMSE validación cruzada</li>
+        </ul>
+        <div class="hp-chart" data-draw="chart-rmse" data-source="modelos"></div>
+      </div>
+      <div class="hp-card" id="card-brecha">
+        <h3>Sobreajuste: entrenamiento vs validación cruzada</h3>
+        <p class="hp-note">Cada línea une el RMSE medio de entrenamiento con el de validación cruzada. A la derecha, la brecha porcentual.</p>
+        <ul class="hp-legend">
+          <li><span class="hp-sw"></span>RMSE entrenamiento</li>
+          <li><span class="hp-sw hp-c0"></span>RMSE validación cruzada</li>
+        </ul>
+        <div class="hp-chart" data-draw="chart-brecha" data-source="modelos"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="hp-section" id="entrenamiento">
+    <h2>Cómo se entrenó cada modelo</h2>
+    <p class="hp-intro">Selecciona un modelo para revisar las configuraciones probadas en GridSearchCV, el error en cada uno de los folds y sus predicciones sobre el split de validación.</p>
+    <div class="hp-controls">
+      <label for="hp-modelo">Modelo</label>
+      <select id="hp-modelo" data-draw="selector" data-source="modelos" aria-label="Modelo"></select>
+      <span class="hp-sel-meta" data-draw="sel-meta" data-source="modelos">—</span>
+    </div>
+    <div class="hp-grid">
+      <div class="hp-card" id="card-folds">
+        <h3>RMSE por fold</h3>
+        <p class="hp-note">Mejor configuración. La línea punteada es el RMSE medio de validación cruzada; folds muy dispersos indican un modelo inestable.</p>
+        <ul class="hp-legend">
+          <li><span class="hp-sw hp-c0"></span>Fold de validación</li>
+          <li><span class="hp-sw"></span>Fold de entrenamiento</li>
+        </ul>
+        <div class="hp-chart" data-draw="chart-folds" data-source="folds_cv"></div>
+      </div>
+      <div class="hp-card" id="card-dispersion">
+        <h3>Real vs predicho en validación</h3>
+        <p class="hp-note">Cada punto es una casa del split de validación. La diagonal marca la predicción perfecta.</p>
+        <div class="hp-chart" data-draw="chart-dispersion" data-source="predicciones_validacion"></div>
+      </div>
+    </div>
+    <div class="hp-card" id="card-configs">
+      <h3>Configuraciones probadas</h3>
+      <p class="hp-note">Resultados de GridSearchCV para el modelo seleccionado, ordenados por ranking. La configuración elegida aparece resaltada.</p>
+      <div class="hp-table-wrap">
+        <table class="hp-table" data-source="configuraciones_cv" data-row-key="modelo,configuracion">
+          <thead>
+            <tr>
+              <th class="num" data-field="ranking">Ranking</th>
+              <th data-field="configuracion">Configuración</th>
+              <th class="num" data-field="rmse_cv">RMSE CV (USD)</th>
+              <th class="num" data-field="std_cv">Desv. CV (USD)</th>
+              <th class="num" data-field="rmse_train">RMSE train (USD)</th>
+            </tr>
+          </thead>
+          <tbody data-draw="tabla-configs"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="hp-section" id="salida-test">
+    <h2>Forma de la salida en test</h2>
+    <p class="hp-intro">Densidad de las predicciones de cada modelo sobre test.csv, comparada con la salida del pipeline de inferencia (modelo ganador) y con SalePrice real de entrenamiento como referencia.</p>
+    <div class="hp-card" id="card-densidad">
+      <h3>Modelo seleccionado vs pipeline de inferencia</h3>
+      <p class="hp-note">Usa el selector de la sección anterior para cambiar el modelo.</p>
+      <ul class="hp-legend">
+        <li><span class="hp-sw hp-c0"></span>Modelo seleccionado (test)</li>
+        <li><span class="hp-sw is-dashed hp-c1b"></span>Pipeline de inferencia (test)</li>
+        <li><span class="hp-sw is-area"></span>SalePrice entrenamiento (real)</li>
+      </ul>
+      <div class="hp-chart" data-draw="chart-densidad" data-source="densidades_test"></div>
+    </div>
+    <div class="hp-card" id="card-multiples">
+      <h3>Todos los modelos en la misma escala</h3>
+      <p class="hp-note">Mismos ejes en todos los paneles. KS mide la distancia entre las predicciones en test y SalePrice de entrenamiento (0 = idénticas).</p>
+      <div class="hp-mult" data-draw="multiples" data-source="densidades_test modelos"></div>
+    </div>
+  </section>
+
+  <section class="hp-section" id="criterios">
+    <h2>Criterios de descarte</h2>
+    <p class="hp-intro">Un modelo se descarta como incoherente si incumple cualquiera de estos criterios:</p>
+    <ul class="hp-defs">
+      <li><b>NRMSE alto:</b> NRMSE en validación mayor a <span data-draw="umbral-nrmse" data-source="referencia" data-field="umbral_nrmse" data-row="0">—</span>, el doble del mejor NRMSE del torneo (<span data-draw="mejor-nrmse" data-source="referencia" data-field="mejor_nrmse" data-row="0">—</span>).</li>
+      <li><b>Predicciones fuera de rango:</b> alguna predicción en test negativa o mayor a <span data-draw="limite-rango" data-source="referencia" data-field="limite_rango" data-row="0">—</span> USD, 1.5 veces el máximo de SalePrice en entrenamiento.</li>
+      <li><b>Distribución distinta:</b> estadístico KS entre las predicciones en test y SalePrice de entrenamiento mayor a <span data-draw="umbral-ks" data-source="referencia" data-field="umbral_ks" data-row="0">—</span>.</li>
+      <li><b>Inestable en CV:</b> desviación estándar del RMSE entre folds mayor a <span data-draw="umbral-cv" data-source="referencia" data-field="umbral_cv" data-row="0">—</span> veces su media.</li>
+    </ul>
+    <div class="hp-card">
+      <div class="hp-table-wrap">
+        <table class="hp-table" data-source="modelos" data-row-key="modelo">
+          <thead>
+            <tr>
+              <th data-field="modelo">Modelo</th>
+              <th class="num" data-field="nrmse_val">NRMSE val</th>
+              <th class="num" data-field="n_fuera_rango">Predicciones fuera de rango</th>
+              <th class="num" data-field="ks_test_vs_train">KS test vs train</th>
+              <th class="num" data-field="cv_relativa">Desv. CV / media</th>
+              <th data-field="estado">Estado</th>
+              <th data-field="motivos">Motivos</th>
+            </tr>
+          </thead>
+          <tbody data-draw="tabla-criterios"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <footer class="hp-foot">
+    <p>Transforming data into profit</p>
+  </footer>
+</div>
+
+<script>
+  dash.calc('resumen', {
+    inputs: ['modelos'],
+    title: 'Resumen del torneo',
+    description: 'Mejor modelo válido por RMSE en validación y lista de modelos descartados.',
+    fn: (modelos) => {
+      const off = (r) => r.descartado === true || r.descartado === 'true';
+      const validos = modelos.filter((r) => !off(r)).sort((a, b) => Number(a.rmse_val) - Number(b.rmse_val));
+      const descartados = modelos.filter(off).map((r) => r.modelo);
+      const g = validos[0];
+      return [{
+        ganador: g ? g.modelo : null,
+        rmse_val: g ? Number(g.rmse_val) : null,
+        nrmse_val: g ? Number(g.nrmse_val) : null,
+        descartados: descartados.length ? descartados.join(', ') : 'ninguno',
+      }];
+    },
+  });
+
+  const isOn = (v) => v === true || v === 'true';
+  const n = (v) => Number(v);
+  const fInt = d3.format(',.0f');
+  const fAxis = d3.format('~s');
+  const ok = (id) => dash.data(id).status === 'ok';
+  const rows = (id) => (ok(id) ? dash.data(id).data : []);
+  const fill = (el, text) => { el.textContent = text; };
+
+
+  const selectedModel = () => {
+    const p = dash.params().modelo;
+    const r = rows('resumen');
+    return p || (r[0] && r[0].ganador) || (rows('modelos')[0] || {}).modelo;
+  };
+
+  // Utilidades de gráficas
+  const frame = (el, h) => {
+    el.replaceChildren();
+    const w = Math.max(260, el.clientWidth);
+    const svg = d3.select(el).append('svg').attr('width', '100%').attr('height', h).attr('viewBox', `0 0 ${w} ${h}`);
+    const tip = d3.select(el).append('div').attr('class', 'hp-tip').style('opacity', 0);
+    return { svg, w, h, tip };
+  };
+  const textWidth = (svg, labels) => {
+    const t = svg.append('text').style('font-size', 'var(--cds-font-size-caption)').style('font-family', 'var(--lx-font)');
+    let m = 0;
+    labels.forEach((s) => { t.text(s); m = Math.max(m, t.node().getComputedTextLength()); });
+    t.remove();
+    return m;
+  };
+  const styleAxis = (g) => {
+    g.attr('font-size', null).attr('font-family', null);
+    g.selectAll('text').attr('fill', 'var(--lx-muted)').style('font-size', 'var(--cds-font-size-caption)');
+    g.selectAll('path,line').attr('stroke', 'var(--lx-axis)');
+  };
+  const grid = (g) => {
+    g.selectAll('line').attr('stroke', 'var(--lx-grid)');
+    g.select('.domain').remove();
+    g.selectAll('text').remove();
+  };
+  const showTip = (tip, el, event, title, lines) => {
+    tip.selectAll('*').remove();
+    tip.append('div').attr('class', 'k').text(title);
+    lines.forEach(([label, value, color]) => {
+      const r = tip.append('div').attr('class', 'row');
+      if (color) r.append('span').attr('class', 'sw').style('background', color);
+      r.append('span').text(`${label}: ${value}`);
+    });
+    const [x, y] = d3.pointer(event, el);
+    const node = tip.node();
+    tip.style('opacity', 1);
+    const left = Math.min(Math.max(0, x + 12), el.clientWidth - node.offsetWidth);
+    const top = Math.max(0, y - node.offsetHeight - 8);
+    tip.style('left', `${left}px`).style('top', `${top}px`);
+  };
+  const hideTip = (tip) => tip.style('opacity', 0);
+
+  // Resumen
+  const drawText = (name, id, field, format) => dash.draw(name, (el) => {
+    const r = rows(id)[0];
+    fill(el, r && r[field] != null ? format(r[field]) : '—');
+  });
+  drawText('ganador', 'resumen', 'ganador', (v) => v);
+  drawText('ganador-rmse', 'resumen', 'rmse_val', (v) => fInt(n(v)));
+  drawText('ganador-nrmse', 'resumen', 'nrmse_val', (v) => n(v).toFixed(4));
+  drawText('descartados', 'resumen', 'descartados', (v) => v);
+  drawText('n-folds', 'referencia', 'n_folds', (v) => fInt(n(v)));
+  drawText('n-train', 'referencia', 'n_train', (v) => fInt(n(v)));
+  drawText('n-val', 'referencia', 'n_val', (v) => fInt(n(v)));
+  drawText('n-test', 'referencia', 'n_test', (v) => fInt(n(v)));
+  drawText('umbral-nrmse', 'referencia', 'umbral_nrmse', (v) => n(v).toFixed(4));
+  drawText('mejor-nrmse', 'referencia', 'mejor_nrmse', (v) => n(v).toFixed(4));
+  drawText('limite-rango', 'referencia', 'limite_rango', (v) => fInt(n(v)));
+  drawText('umbral-ks', 'referencia', 'umbral_ks', (v) => n(v).toFixed(2));
+  drawText('umbral-cv', 'referencia', 'umbral_cv', (v) => n(v).toFixed(2));
+
+  // Tabla del torneo
+  dash.draw('tabla-modelos', (tbody) => {
+    tbody.replaceChildren();
+    rows('modelos').forEach((r) => {
+      const tr = document.createElement('tr');
+      if (isOn(r.descartado)) tr.className = 'is-off';
+      const cells = [
+        [r.modelo, ''],
+        [r.estado, isOn(r.descartado) ? 'is-bad' : 'is-ok'],
+        [fInt(n(r.rmse_val)), 'num'],
+        [n(r.nrmse_val).toFixed(4), 'num'],
+        [fInt(n(r.rmse_cv)), 'num'],
+        [fInt(n(r.std_cv)), 'num'],
+        [fInt(n(r.rmse_train_cv)), 'num'],
+        [n(r.brecha_pct).toFixed(1), 'num'],
+        [r.mejores_hiperparametros, ''],
+      ];
+      cells.forEach(([text, cls]) => {
+        const td = document.createElement('td');
+        td.textContent = text;
+        if (cls) td.className = cls;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  });
+
+  // RMSE validación vs CV (modelos válidos)
+  dash.draw('chart-rmse', (el) => {
+    const data = rows('modelos').filter((r) => !isOn(r.descartado));
+    if (!data.length) { el.replaceChildren(); return; }
+    const h = 70 + data.length * 44;
+    const { svg, w, tip } = frame(el, h);
+    const series = [['rmse_val', 'RMSE validación', 'var(--lx-main)'], ['rmse_cv', 'RMSE validación cruzada', 'var(--lx-second)']];
+    const left = textWidth(svg, data.map((d) => d.modelo)) + 12;
+    const right = textWidth(svg, ['000,000']) + 10;
+    const m = { top: 8, right, bottom: 28, left };
+    const xmax = d3.max(data, (d) => Math.max(n(d.rmse_val), n(d.rmse_cv)));
+    const x = d3.scaleLinear([0, xmax * 1.05], [m.left, w - m.right]).nice();
+    const y = d3.scaleBand(data.map((d) => d.modelo), [m.top, h - m.bottom]).padding(0.3);
+    const yi = d3.scaleBand(series.map((s) => s[0]), [0, y.bandwidth()]).padding(0.12);
+    svg.append('g').attr('transform', `translate(0,${h - m.bottom})`).call(d3.axisBottom(x).ticks(Math.max(2, Math.floor(w / 110))).tickSize(-(h - m.top - m.bottom)).tickFormat('')).call(grid);
+    svg.append('g').attr('transform', `translate(0,${h - m.bottom})`).call(d3.axisBottom(x).ticks(Math.max(2, Math.floor(w / 110))).tickFormat(fAxis)).call(styleAxis);
+    svg.append('g').attr('transform', `translate(${m.left},0)`).call(d3.axisLeft(y).tickSize(0)).call(styleAxis).call((g) => g.select('.domain').remove());
+    const groups = svg.append('g').selectAll('g').data(data).join('g').attr('transform', (d) => `translate(0,${y(d.modelo)})`);
+    series.forEach(([key, label, color]) => {
+      groups.append('rect').attr('x', x(0)).attr('y', yi(key)).attr('height', Math.min(yi.bandwidth(), 32))
+        .attr('width', (d) => x(n(d[key])) - x(0)).attr('rx', 2).attr('fill', color)
+        .on('mousemove', (event, d) => showTip(tip, el, event, d.modelo, [[label, `${fInt(n(d[key]))} USD`, color]]))
+        .on('mouseleave', () => hideTip(tip));
+      groups.append('text').attr('x', (d) => x(n(d[key])) + 4).attr('y', yi(key) + yi.bandwidth() / 2).attr('dy', '0.35em')
+        .attr('fill', 'var(--lx-muted)').style('font-size', 'var(--cds-font-size-caption)').text((d) => fInt(n(d[key])));
+    });
+  });
+
+  // Brecha entrenamiento vs CV
+  dash.draw('chart-brecha', (el) => {
+    const data = rows('modelos').filter((r) => !isOn(r.descartado));
+    if (!data.length) { el.replaceChildren(); return; }
+    const h = 70 + data.length * 40;
+    const { svg, w, tip } = frame(el, h);
+    const left = textWidth(svg, data.map((d) => d.modelo)) + 12;
+    const right = textWidth(svg, data.map((d) => `${n(d.brecha_pct).toFixed(1)}%`)) + 14;
+    const m = { top: 8, right, bottom: 28, left };
+    const xmax = d3.max(data, (d) => Math.max(n(d.rmse_cv), n(d.rmse_train_cv)));
+    const x = d3.scaleLinear([0, xmax * 1.05], [m.left, w - m.right]).nice();
+    const y = d3.scaleBand(data.map((d) => d.modelo), [m.top, h - m.bottom]).padding(0.4);
+    const ticks = Math.max(2, Math.floor(w / 110));
+    svg.append('g').attr('transform', `translate(0,${h - m.bottom})`).call(d3.axisBottom(x).ticks(ticks).tickSize(-(h - m.top - m.bottom)).tickFormat('')).call(grid);
+    svg.append('g').attr('transform', `translate(0,${h - m.bottom})`).call(d3.axisBottom(x).ticks(ticks).tickFormat(fAxis)).call(styleAxis);
+    svg.append('g').attr('transform', `translate(${m.left},0)`).call(d3.axisLeft(y).tickSize(0)).call(styleAxis).call((g) => g.select('.domain').remove());
+    const cy = (d) => y(d.modelo) + y.bandwidth() / 2;
+    const g = svg.append('g').selectAll('g').data(data).join('g');
+    g.append('line').attr('x1', (d) => x(n(d.rmse_train_cv))).attr('x2', (d) => x(n(d.rmse_cv))).attr('y1', cy).attr('y2', cy)
+      .attr('stroke', 'var(--lx-ref)').attr('stroke-width', 2);
+    g.append('circle').attr('cx', (d) => x(n(d.rmse_train_cv))).attr('cy', cy).attr('r', 5).attr('fill', 'var(--lx-tint)');
+    g.append('circle').attr('cx', (d) => x(n(d.rmse_cv))).attr('cy', cy).attr('r', 5).attr('fill', 'var(--lx-main)');
+    g.append('text').attr('x', w - m.right + 8).attr('y', cy).attr('dy', '0.35em').attr('fill', 'var(--lx-fg)')
+      .style('font-size', 'var(--cds-font-size-caption)').text((d) => `${n(d.brecha_pct).toFixed(1)}%`);
+    g.append('rect').attr('x', m.left).attr('width', w - m.left - m.right).attr('y', (d) => y(d.modelo)).attr('height', y.bandwidth())
+      .attr('fill', 'transparent')
+      .on('mousemove', (event, d) => showTip(tip, el, event, d.modelo, [
+        ['RMSE entrenamiento', `${fInt(n(d.rmse_train_cv))} USD`, 'var(--lx-tint)'],
+        ['RMSE validación cruzada', `${fInt(n(d.rmse_cv))} USD`, 'var(--lx-main)'],
+        ['Brecha', `${n(d.brecha_pct).toFixed(1)}%`],
+      ]))
+      .on('mouseleave', () => hideTip(tip));
+  });
+
+  // Selector de modelo
+  dash.draw('selector', (sel) => {
+    const data = rows('modelos');
+    sel.replaceChildren(...data.map((r) => new Option(isOn(r.descartado) ? `${r.modelo} (descartado)` : r.modelo, r.modelo)));
+    sel.value = selectedModel() || '';
+    sel.onchange = () => dash.setParams({ modelo: sel.value });
+  });
+  dash.draw('sel-meta', (el) => {
+    const r = rows('modelos').find((d) => d.modelo === selectedModel());
+    fill(el, r ? `${r.estimador} · ${r.n_configuraciones} configuraciones · ${r.mejores_hiperparametros}` : '—');
+  });
+
+  // RMSE por fold
+  dash.draw('chart-folds', (el) => {
+    const modelo = selectedModel();
+    const data = rows('folds_cv').filter((r) => r.modelo === modelo).map((r) => ({ fold: n(r.fold), te: n(r.rmse_validacion_fold), tr: n(r.rmse_entrenamiento_fold) }));
+    if (!data.length) { el.replaceChildren(); return; }
+    const h = 260;
+    const { svg, w, tip } = frame(el, h);
+    const ymax = d3.max(data, (d) => Math.max(d.te, d.tr));
+    const y = d3.scaleLinear([0, ymax * 1.1], [h - 28, 10]).nice();
+    const left = textWidth(svg, y.ticks(5).map(fAxis)) + 10;
+    const m = { top: 10, right: 16, bottom: 28, left };
+    const x = d3.scalePoint(data.map((d) => d.fold), [m.left + 8, w - m.right - 8]);
+    svg.append('g').attr('transform', `translate(${m.left},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(w - m.left - m.right)).tickFormat('')).call(grid);
+    svg.append('g').attr('transform', `translate(${m.left},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(fAxis)).call(styleAxis).call((g) => g.select('.domain').remove());
+    svg.append('g').attr('transform', `translate(0,${h - m.bottom})`).call(d3.axisBottom(x).tickFormat((d) => `F${d}`)).call(styleAxis);
+    const mean = d3.mean(data, (d) => d.te);
+    svg.append('line').attr('x1', m.left).attr('x2', w - m.right).attr('y1', y(mean)).attr('y2', y(mean))
+      .attr('stroke', 'var(--lx-ref)').attr('stroke-dasharray', '4 4');
+    [['tr', 'var(--lx-tint)'], ['te', 'var(--lx-main)']].forEach(([key, color]) => {
+      svg.append('path').datum(data).attr('fill', 'none').attr('stroke', color).attr('stroke-width', 2)
+        .attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round')
+        .attr('d', d3.line().x((d) => x(d.fold)).y((d) => y(d[key])));
+      svg.append('g').selectAll('circle').data(data).join('circle').attr('cx', (d) => x(d.fold)).attr('cy', (d) => y(d[key])).attr('r', 3).attr('fill', color);
+    });
+    svg.append('g').selectAll('rect').data(data).join('rect')
+      .attr('x', (d) => x(d.fold) - x.step() / 2).attr('width', x.step()).attr('y', m.top).attr('height', h - m.top - m.bottom).attr('fill', 'transparent')
+      .on('mousemove', (event, d) => showTip(tip, el, event, `Fold ${d.fold}`, [
+        ['Validación', `${fInt(d.te)} USD`, 'var(--lx-main)'],
+        ['Entrenamiento', `${fInt(d.tr)} USD`, 'var(--lx-tint)'],
+        ['Media CV', `${fInt(mean)} USD`],
+      ]))
+      .on('mouseleave', () => hideTip(tip));
+  });
+
+  // Real vs predicho
+  dash.draw('chart-dispersion', (el) => {
+    const modelo = selectedModel();
+    const data = rows('predicciones_validacion').filter((r) => r.modelo === modelo).map((r) => ({ real: n(r.real), pred: n(r.predicho) }));
+    if (!data.length) { el.replaceChildren(); return; }
+    const h = 260;
+    const { svg, w, tip } = frame(el, h);
+    const max = d3.max(data, (d) => Math.max(d.real, d.pred));
+    const min = Math.min(0, d3.min(data, (d) => Math.min(d.real, d.pred)));
+    const y = d3.scaleLinear([min, max * 1.05], [h - 28, 10]).nice();
+    const left = textWidth(svg, y.ticks(5).map(fAxis)) + 10;
+    const m = { top: 10, right: 26, bottom: 28, left };
+    const x = d3.scaleLinear(y.domain(), [m.left, w - m.right]);
+    const ticks = Math.max(2, Math.floor(w / 90));
+    svg.append('g').attr('transform', `translate(${m.left},0)`).call(d3.axisLeft(y).ticks(5).tickSize(-(w - m.left - m.right)).tickFormat('')).call(grid);
+    svg.append('g').attr('transform', `translate(${m.left},0)`).call(d3.axisLeft(y).ticks(5).tickFormat(fAxis)).call(styleAxis).call((g) => g.select('.domain').remove());
+    svg.append('g').attr('transform', `translate(0,${h - m.bottom})`).call(d3.axisBottom(x).ticks(ticks).tickFormat(fAxis)).call(styleAxis);
+    const [d0, d1] = y.domain();
+    svg.append('line').attr('x1', x(d0)).attr('y1', y(d0)).attr('x2', x(d1)).attr('y2', y(d1))
+      .attr('stroke', 'var(--lx-ref)').attr('stroke-dasharray', '4 4');
+    svg.append('g').selectAll('circle').data(data).join('circle')
+      .attr('cx', (d) => x(d.real)).attr('cy', (d) => y(d.pred)).attr('r', 2.5).attr('fill', 'var(--lx-main)').attr('fill-opacity', 0.5);
+    const delaunay = d3.Delaunay.from(data, (d) => x(d.real), (d) => y(d.pred));
+    const dot = svg.append('circle').attr('r', 5).attr('fill', 'none').attr('stroke', 'var(--lx-main)').attr('stroke-width', 2).style('opacity', 0);
+    svg.append('rect').attr('x', m.left).attr('y', m.top).attr('width', w - m.left - m.right).attr('height', h - m.top - m.bottom).attr('fill', 'transparent')
+      .on('mousemove', (event) => {
+        const [px, py] = d3.pointer(event, svg.node());
+        const d = data[delaunay.find(px, py)];
+        dot.attr('cx', x(d.real)).attr('cy', y(d.pred)).style('opacity', 1);
+        showTip(tip, el, event, modelo, [['Real', `${fInt(d.real)} USD`], ['Predicho', `${fInt(d.pred)} USD`], ['Error', `${fInt(d.pred - d.real)} USD`]]);
+      })
+      .on('mouseleave', () => { hideTip(tip); dot.style('opacity', 0); });
+  });
+
+  // Configuraciones probadas
+  dash.draw('tabla-configs', (tbody) => {
+    tbody.replaceChildren();
+    const modelo = selectedModel();
+    rows('configuraciones_cv').filter((r) => r.modelo === modelo).sort((a, b) => n(a.ranking) - n(b.ranking)).forEach((r) => {
+      const tr = document.createElement('tr');
+      tr.dataset.key = `${encodeURIComponent(r.modelo)},${encodeURIComponent(r.configuracion)}`;
+      if (isOn(r.seleccionada)) tr.className = 'is-sel';
+      [[fInt(n(r.ranking)), 'num'], [r.configuracion, ''], [fInt(n(r.rmse_cv)), 'num'], [fInt(n(r.std_cv)), 'num'], [fInt(n(r.rmse_train)), 'num']].forEach(([text, cls]) => {
+        const td = document.createElement('td');
+        td.textContent = text;
+        if (cls) td.className = cls;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  });
+
+  // Densidades
+  const serieTrain = 'SalePrice train (real)';
+  const serieInf = 'Pipeline de inferencia';
+  const densities = () => d3.group(rows('densidades_test').map((r) => ({ serie: r.serie, x: n(r.precio), y: n(r.densidad) })), (d) => d.serie);
+  const fDens = d3.format('.2~e');
+
+  const drawDensity = (svg, w, h, m, x, y, by, modelo, showAxes) => {
+    if (showAxes) {
+      svg.append('g').attr('transform', `translate(0,${h - m.bottom})`).call(d3.axisBottom(x).ticks(Math.max(2, Math.floor(w / 90))).tickFormat(fAxis)).call(styleAxis);
+    } else {
+      svg.append('g').attr('transform', `translate(0,${h - m.bottom})`).call(d3.axisBottom(x).ticks(3).tickFormat(fAxis)).call(styleAxis);
+    }
+    const area = d3.area().x((d) => x(d.x)).y0(y(0)).y1((d) => y(d.y));
+    const line = d3.line().x((d) => x(d.x)).y((d) => y(d.y));
+    svg.append('path').datum(by.get(serieTrain) || []).attr('d', area).attr('fill', 'var(--lx-tint)').attr('fill-opacity', 0.35);
+    svg.append('path').datum(by.get(serieInf) || []).attr('d', line).attr('fill', 'none').attr('stroke', 'var(--lx-second)').attr('stroke-width', 2).attr('stroke-dasharray', '5 4');
+    svg.append('path').datum(by.get(modelo) || []).attr('d', line).attr('fill', 'none').attr('stroke', 'var(--lx-main)').attr('stroke-width', 2)
+      .attr('stroke-linecap', 'round').attr('stroke-linejoin', 'round');
+  };
+
+  dash.draw('chart-densidad', (el) => {
+    const by = densities();
+    const modelo = selectedModel();
+    if (!by.size || !by.get(modelo)) { el.replaceChildren(); return; }
+    const h = 280;
+    const { svg, w, tip } = frame(el, h);
+    const m = { top: 10, right: 26, bottom: 28, left: 14 };
+    const all = [serieTrain, serieInf, modelo].flatMap((s) => by.get(s) || []);
+    const x = d3.scaleLinear(d3.extent(all, (d) => d.x), [m.left, w - m.right]);
+    const y = d3.scaleLinear([0, d3.max(all, (d) => d.y) * 1.08], [h - m.bottom, m.top]);
+    drawDensity(svg, w, h, m, x, y, by, modelo, true);
+    const xs = (by.get(modelo) || []).map((d) => d.x);
+    const rule = svg.append('line').attr('y1', m.top).attr('y2', h - m.bottom).attr('stroke', 'var(--lx-ref)').style('opacity', 0);
+    svg.append('rect').attr('x', m.left).attr('y', m.top).attr('width', w - m.left - m.right).attr('height', h - m.top - m.bottom).attr('fill', 'transparent')
+      .on('mousemove', (event) => {
+        const px = x.invert(d3.pointer(event, svg.node())[0]);
+        const i = d3.minIndex(xs, (v) => Math.abs(v - px));
+        const at = (s) => ((by.get(s) || [])[i] || {}).y;
+        rule.attr('x1', x(xs[i])).attr('x2', x(xs[i])).style('opacity', 1);
+        showTip(tip, el, event, `Precio ${fInt(xs[i])} USD`, [
+          [modelo, fDens(at(modelo) || 0), 'var(--lx-main)'],
+          ['Inferencia', fDens(at(serieInf) || 0), 'var(--lx-second)'],
+          ['Train (real)', fDens(at(serieTrain) || 0), 'var(--lx-tint)'],
+        ]);
+      })
+      .on('mouseleave', () => { hideTip(tip); rule.style('opacity', 0); });
+  });
+
+  dash.draw('multiples', (el) => {
+    el.replaceChildren();
+    const by = densities();
+    const modelos = rows('modelos');
+    if (!by.size || !modelos.length) return;
+    const all = Array.from(by.values()).flat();
+    const xDomain = d3.extent(all, (d) => d.x);
+    const yMax = d3.max(all, (d) => d.y) * 1.08;
+    modelos.forEach((r) => {
+      const item = d3.select(el).append('div').attr('class', isOn(r.descartado) ? 'hp-mult-item is-off' : 'hp-mult-item');
+      const head = item.append('div').attr('class', 'hp-mult-head');
+      head.append('strong').text(r.modelo);
+      head.append('span').attr('class', isOn(r.descartado) ? 'hp-pill is-bad' : 'hp-pill').text(r.estado);
+      item.append('p').attr('class', 'hp-note').text(`Mediana ${fInt(n(r.test_mediana))} USD · KS ${n(r.ks_test_vs_train).toFixed(3)} · p5–p95 ${fInt(n(r.test_p05))}–${fInt(n(r.test_p95))}`);
+      const box = item.append('div').node();
+      const w = Math.max(220, box.clientWidth || 260);
+      const h = 150;
+      const m = { top: 6, right: 24, bottom: 24, left: 10 };
+      const svg = d3.select(box).append('svg').attr('width', '100%').attr('height', h).attr('viewBox', `0 0 ${w} ${h}`);
+      const x = d3.scaleLinear(xDomain, [m.left, w - m.right]);
+      const y = d3.scaleLinear([0, yMax], [h - m.bottom, m.top]);
+      drawDensity(svg, w, h, m, x, y, by, r.modelo, false);
+    });
+  });
+
+  // Criterios
+  dash.draw('tabla-criterios', (tbody) => {
+    tbody.replaceChildren();
+    rows('modelos').forEach((r) => {
+      const tr = document.createElement('tr');
+      const cells = [
+        [r.modelo, ''],
+        [n(r.nrmse_val).toFixed(4), isOn(r.falla_nrmse) ? 'num is-fail' : 'num'],
+        [fInt(n(r.n_fuera_rango)), isOn(r.falla_rango) ? 'num is-fail' : 'num'],
+        [n(r.ks_test_vs_train).toFixed(3), isOn(r.falla_ks) ? 'num is-fail' : 'num'],
+        [n(r.cv_relativa).toFixed(2), isOn(r.falla_cv) ? 'num is-fail' : 'num'],
+        [r.estado, isOn(r.descartado) ? 'is-bad' : 'is-ok'],
+        [r.motivos || '', ''],
+      ];
+      cells.forEach(([text, cls]) => {
+        const td = document.createElement('td');
+        td.textContent = text;
+        if (cls) td.className = cls;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  });
+</script>

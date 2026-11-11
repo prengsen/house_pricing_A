@@ -1,0 +1,27 @@
+# core
+loguru
+python-dotenv
+pyyaml
+tqdm
+typer
+
+# data science
+numpy
+pandas
+scikit-learn
+feature-engine
+matplotlib
+seaborn
+scipy
+
+# notebooks
+ipython
+jupyterlab
+notebook
+
+# dev / docs
+mkdocs
+ruff
+
+# paquete local del proyecto
+-e .
