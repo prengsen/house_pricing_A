@@ -191,3 +191,7 @@ cython_debug/
 .pypirc
 # Modelos entrenados (se regeneran con los notebooks)
 models/*.joblib
+
+# MLflow: backend SQLite y artefactos locales
+mlflow.db
+mlruns/

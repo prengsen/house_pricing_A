@@ -11,6 +11,7 @@ for c in nb["cells"]:
     if c["cell_type"] != "code": continue
     s = "".join(c["source"])
     if "joblib.dump" in s: continue          # no sobrescribir models/
+    if "mlflow.start_run" in s or "register_model" in s: continue  # no registrar runs ni versiones en MLflow
     exec(compile(s, "nb3", "exec"), ns)
 
 busquedas, torneo, sobreajuste = ns["busquedas"], ns["torneo"], ns["sobreajuste"]
